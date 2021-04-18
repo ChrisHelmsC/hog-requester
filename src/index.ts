@@ -50,8 +50,10 @@ let infileContents: InFileLayout = {
 }
 
 async function main() {
+
+
   const _package = await vm.repo({
-    image_hash: "aa46c98b655c7b9b6e04a64ac6f668c4644b887277218104cf4506d3",
+    image_hash: "4f07bcedd4c5cdda86c4265ee2e316cc3062f973b59edc191f8a4ece",
     min_mem_gib: 2.0,
     min_storage_gib: 2.0,
   });
@@ -72,15 +74,14 @@ async function main() {
       const outputFile = '/golem/output/outfile';
       ctx.download_file(
         outputFile,
-        path.join(__dirname + "/output/logs", './output' + task.data().game + '.txt')
+        LogGenerator.getLogFileName(task.data().game)
       );
 
       //Get game stats output, add to downloaded array
       const gameStatsProviderOutput = '/golem/output/gamestats.json';
-      const gameStatsFile = __dirname + '/output/gamestats/' + 'game_stats_output' + task.data().game + '.json';
       ctx.download_file(
         gameStatsProviderOutput,
-        gameStatsFile
+        LogGenerator.getStatsFileName(task.data().game)
       );
 
       yield ctx.commit({ timeout: dayjs.duration({ seconds: 500 }).asMilliseconds() });
@@ -94,8 +95,11 @@ async function main() {
     return;
   }
 
+  //Clear out all output file folders before running
+  LogGenerator.createFoldersAndClearReports();
+
   let games: InFileLayout[] = [];
-  for (let i = 0; i < 50; i++) {
+  for (let i = 0; i < 5; i++) {
     games[i] = {
       player1: {
         deck: shuffle(infileContents.player1.deck).slice(),
@@ -134,7 +138,7 @@ async function main() {
   );
 
   //Get contents of files containing stats
-  const outputDir = __dirname + '/output/gamestats/';
+  const outputDir = LogGenerator.GAME_STATS_OUTPUT;
   readdirSync(outputDir).forEach(file => {
     //Store downloaded file data in array for later reference, TODO add a try/catch here
     const gameDataContents: GameData = JSON.parse(readFileSync(outputDir + file, 'utf-8'));
@@ -142,8 +146,8 @@ async function main() {
   })
 
   //Create report with downloaded data
-  const report = new LogGenerator(gameDataArray).createReport();
-  writeFileSync(__dirname + '/output/fullreport.json', JSON.stringify(report));
+  const report = new LogGenerator(gameDataArray).writeReport();
+  
 }
 
 main()

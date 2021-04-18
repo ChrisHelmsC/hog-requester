@@ -1,9 +1,20 @@
 import { GameData } from "./game.data";
 import { GameReport, GameStats, PlayerGameReport } from "./game.report";
+import fsExtra from 'fs-extra';
+import { existsSync, mkdirSync, unlink, unlinkSync, writeFileSync } from "fs";
+import path from "path";
 
 export class LogGenerator {
-    gameDataSet : Array<GameData>
-    gameReport : GameReport; 
+    private gameDataSet : Array<GameData>
+    private gameReport : GameReport; 
+
+    //Output directories
+    static readonly BASE_OUTPUT = path.join(__dirname, '/output/');
+    static readonly GAME_STATS_OUTPUT = path.join(__dirname, '/output/gamestats/');
+    static readonly GAME_LOGS_OUTPUT = path.join(__dirname, "/output/logs/");
+    static readonly FINAL_REPORT_OUTPUT = path.join(__dirname,  "/output/fullreport/");
+    static readonly FINAL_REPORT_NAME = "fullreport.json";
+
 
     //User known player names from game project
     readonly playerOneName = 'PlayerOne';
@@ -16,7 +27,7 @@ export class LogGenerator {
     }
 
     //Create data report from gethered data
-    public createReport() {
+    public writeReport() {
         //Access to players specific reports
         const playerOneReport = this.gameReport.playerGameReports[this.playerOneName];
         const playerTwoReport = this.gameReport.playerGameReports[this.playerTwoName];
@@ -49,6 +60,12 @@ export class LogGenerator {
 
             this.calcStats(playerOneStats.cardsPlayed, playerOneReport.cardsPlayed, index);
             this.calcStats(playerTwoStats.cardsPlayed, playerTwoReport.cardsPlayed, index);
+
+            this.calcStats(playerOneStats.cardsReturnedToHand, playerOneReport.cardsReturnedToHand, index);
+            this.calcStats(playerTwoStats.cardsReturnedToHand, playerTwoReport.cardsReturnedToHand, index);
+
+            this.calcStats(playerOneStats.cardsAddedToDeck, playerOneReport.cardsAddedToDeck, index);
+            this.calcStats(playerTwoStats.cardsAddedToDeck, playerTwoReport.cardsAddedToDeck, index);
 
             this.calcStats(playerOneStats.monstersPlayed, playerOneReport.monstersPlayed, index);
             this.calcStats(playerTwoStats.monstersPlayed, playerTwoReport.monstersPlayed, index);
@@ -83,7 +100,8 @@ export class LogGenerator {
         this.gameReport.gameStats.p2WinPercentage = this.gameReport.playerGameReports[this.playerTwoName].wins / this.gameReport.gameStats.gamesPlayed;
         this.gameReport.gameStats.tiePercent = 1 - this.gameReport.gameStats.p1WinPercentage - this.gameReport.gameStats.p2WinPercentage;
 
-        return this.gameReport;
+        //Write out file
+        writeFileSync(path.join(LogGenerator.FINAL_REPORT_OUTPUT, LogGenerator.FINAL_REPORT_NAME), JSON.stringify(this.gameReport));;
     }
 
     //Create stats for a specific player
@@ -98,5 +116,35 @@ export class LogGenerator {
 
         //Calc max
         gameReportStat[PlayerGameReport.MAX] = Math.max(gameReportStat[PlayerGameReport.MAX], setValue);
+    }
+
+    //Clears all reports and logs generated as output
+    public static createFoldersAndClearReports() {
+        //Create folders if necessary
+        if (!existsSync(LogGenerator.BASE_OUTPUT)){
+            mkdirSync(LogGenerator.BASE_OUTPUT);
+        }
+        if (!existsSync(LogGenerator.GAME_STATS_OUTPUT)){
+            mkdirSync(LogGenerator.GAME_STATS_OUTPUT);
+        }
+        if (!existsSync(LogGenerator.GAME_LOGS_OUTPUT)){
+            mkdirSync(LogGenerator.GAME_LOGS_OUTPUT);
+        }
+        if (!existsSync(LogGenerator.GAME_LOGS_OUTPUT)){
+            mkdirSync(LogGenerator.GAME_LOGS_OUTPUT);
+        }
+        
+        fsExtra.emptyDirSync(LogGenerator.GAME_STATS_OUTPUT);
+        fsExtra.emptyDirSync(LogGenerator.GAME_LOGS_OUTPUT);
+        fsExtra.emptyDirSync(LogGenerator.FINAL_REPORT_OUTPUT);
+        console.log('Dir is: ' + LogGenerator.GAME_STATS_OUTPUT);
+    }
+
+    public static getStatsFileName(statsId : number) {
+        return path.join(LogGenerator.GAME_STATS_OUTPUT, 'game_stats_output' + statsId + '.json');
+    }
+
+    public static getLogFileName(logId : number) {
+        return path.join(LogGenerator.GAME_LOGS_OUTPUT, 'output' + logId + '.txt');
     }
 }

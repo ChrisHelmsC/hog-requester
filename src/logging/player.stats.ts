@@ -4,6 +4,8 @@ export class PlayerStats {
     cardsForceDrawn : number = 0; // Done
     cardsDiscarded : number = 0; // Done
     cardsPlayed : number = 0; // Done
+    cardsReturnedToHand : number = 0;
+    cardsAddedToDeck : number = 0;
 
     //spellsPlayed : number = 0;
     //spellDamage : number = 0;

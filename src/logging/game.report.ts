@@ -15,6 +15,10 @@ export class PlayerGameReport {
 
     cardsPlayed = [99, 0 , 0]
 
+    cardsReturnedToHand = [99, 0, 0]
+
+    cardsAddedToDeck = [99, 0, 0]
+
     monstersPlayed = [99, 0, 0];
 
     monstersLost = [99, 0, 0];
