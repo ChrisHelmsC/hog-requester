@@ -10,4 +10,5 @@ export interface InFileLayout {
     }
 
     game: number
+    numberOfGames: number
 }

@@ -1,4 +1,7 @@
 export class PlayerStats {
+    //Details on player
+    strategy = "";
+    
     //Structure storing play stat details
     cardsNaturallyDrawn : number = 0; // Done
     cardsForceDrawn : number = 0; // Done

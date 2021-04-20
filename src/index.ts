@@ -31,32 +31,21 @@ function shuffle(array: Array<string>) {
   return array;
 }
 
-//Create example infile
-let infileContents: InFileLayout = {
-  player1: {
-    deck: ["AcidicSwampOoze", "EmeraldSkytalon", "BlazingBattlemage", "VoodooDoctor", "BloodfenRaptor",
-      "BluegillWarrior", "KoboldGeomancer", "MurlocRaider", "StoneTuskBoar", "Wisp",
-      "GurubashiBerserker", "ChillwindYeti", "LootHoarder"],
-    strategy: "DEFAULT"
-  },
-
-  player2: {
-    deck: ["AcidicSwampOoze", "EmeraldSkytalon", "BlazingBattlemage", "VoodooDoctor", "BloodfenRaptor",
-      "BluegillWarrior", "KoboldGeomancer", "MurlocRaider", "StoneTuskBoar", "Wisp",
-      "GurubashiBerserker", "ChillwindYeti", "LootHoarder"],
-    strategy: "DEFAULT"
-  },
-  game: 0
-}
-
 async function main() {
-
-
   const _package = await vm.repo({
-    image_hash: "4f07bcedd4c5cdda86c4265ee2e316cc3062f973b59edc191f8a4ece",
-    min_mem_gib: 2.0,
-    min_storage_gib: 2.0,
+    image_hash: "4f8808a1e973bbf86f7888ede7db447674ed43d72554c7a94574f368",
+    min_mem_gib: 1.0,
+    min_storage_gib: 1.0,
   });
+
+  //Read in the input file, validate
+  let infile : InFileLayout;
+  try {
+    infile = JSON.parse(readFileSync(__dirname + '/input/in.file.json', 'utf-8')) as InFileLayout;
+  } catch(exception) {
+    console.log("Unable to read the infile.");
+    return;
+  }
 
   //Array for storing successfully retrieved filed
   const gameDataArray: GameData[] = [];
@@ -85,33 +74,40 @@ async function main() {
       );
 
       yield ctx.commit({ timeout: dayjs.duration({ seconds: 500 }).asMilliseconds() });
-      // TODO: Check
-      // job results are valid // and reject by:
-      // task.reject_task(msg = 'invalid file')
-      task.accept_result(outputFile);
+      
+      // Ensure response is JSON TODO validate it correctly parses into infile (an interface)
+      try {
+        const contents: GameData = JSON.parse(readFileSync(LogGenerator.getStatsFileName(task.data().game), 'utf-8'));
+        task.accept_result(outputFile);
+      } catch (exception) {
+        console.log(task.data().game + " was not valid JSON.");
+      }
     }
 
-    ctx.log("All games have completed");
+    ctx.log("Game has completed.");
     return;
   }
 
   //Clear out all output file folders before running
   LogGenerator.createFoldersAndClearReports();
 
-  let games: InFileLayout[] = [];
-  for (let i = 0; i < 5; i++) {
-    games[i] = {
-      player1: {
-        deck: shuffle(infileContents.player1.deck).slice(),
-        strategy: "DEFAULT"
-      },
 
-      player2: {
-        deck: shuffle(infileContents.player2.deck).slice(),
-        strategy: "DEFAULT"
-      },
-      game: i
-    }
+  //For each game to create, shuffle infile deck contents
+  let games: InFileLayout[] = [];
+  console.log('Number of simulations to run: ' + infile.numberOfGames);
+  for (let i = 0; i < infile.numberOfGames; i++) {
+    //Copy infile contents
+    const infileVariation = JSON.parse(readFileSync(__dirname + '/input/in.file.json', 'utf-8')) as InFileLayout;
+
+    //Shuffle decks
+    infileVariation.player1.deck = shuffle(infileVariation.player1.deck).slice();
+    infileVariation.player2.deck = shuffle(shuffle(infileVariation.player2.deck).slice())
+
+    //Add game number to infile
+    infileVariation.game = i;
+
+    //Set game data to variation
+    games[i] = infileVariation;
   }
 
   const timeout: number = dayjs.duration({ minutes: 15 }).asMilliseconds();
@@ -119,7 +115,7 @@ async function main() {
   await asyncWith(
     new Executor({
       task_package: _package,
-      max_workers: 20,
+      max_workers: 30,
       timeout: timeout,
       budget: ".5",
       subnet_tag: "devnet-beta.1",
@@ -141,13 +137,17 @@ async function main() {
   const outputDir = LogGenerator.GAME_STATS_OUTPUT;
   readdirSync(outputDir).forEach(file => {
     //Store downloaded file data in array for later reference, TODO add a try/catch here
-    const gameDataContents: GameData = JSON.parse(readFileSync(outputDir + file, 'utf-8'));
-    gameDataArray.push(gameDataContents)
+    try {
+      const gameDataContents: GameData = JSON.parse(readFileSync(outputDir + file, 'utf-8'));
+      gameDataArray.push(gameDataContents)
+    } catch (exception) {
+      console.log("JSON for file stats failed to parse for " + file);
+      //TODO this should include golem file validation
+    }
   })
 
   //Create report with downloaded data
-  const report = new LogGenerator(gameDataArray).writeReport();
-  
+  new LogGenerator(gameDataArray).writeReport();
 }
 
 main()

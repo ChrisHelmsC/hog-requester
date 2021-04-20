@@ -1,7 +1,7 @@
 import { PlayerStats } from "./player.stats";
 
 export class GameData {
-    readonly TIE = "TIE";
+    static readonly TIE = "TIE";
 
     playerStats : {[ key :string] : PlayerStats};
     turnsPlayed : number;

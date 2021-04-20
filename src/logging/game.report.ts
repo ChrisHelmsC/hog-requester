@@ -3,7 +3,7 @@ export class PlayerGameReport {
     static readonly MIN = 0;
     static readonly AVG = 1;
     static readonly MAX = 2;
-
+    
     wins = 0;
 
     //Structure storing play stat details

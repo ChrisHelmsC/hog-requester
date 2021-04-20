@@ -137,7 +137,6 @@ export class LogGenerator {
         fsExtra.emptyDirSync(LogGenerator.GAME_STATS_OUTPUT);
         fsExtra.emptyDirSync(LogGenerator.GAME_LOGS_OUTPUT);
         fsExtra.emptyDirSync(LogGenerator.FINAL_REPORT_OUTPUT);
-        console.log('Dir is: ' + LogGenerator.GAME_STATS_OUTPUT);
     }
 
     public static getStatsFileName(statsId : number) {
