@@ -27,6 +27,11 @@ The infile is used to define the data that will be used to run the simulations. 
 
 Definitions of data for two players:
 * An array of card names in order that will represent the player's deck. These card names should match the card class names defined in the provider project located at https://github.com/ChrisHelmsC/HearthStoneSimulationsOnGolem.
-The strategy class name to use when playing these cards. Strategies determine the logic that is used when running simulations with a particular deck. Strategies can be simple or extremely complex. For best results, a strategy should be catered to your chosen deck composition. Two example strategies (SimpleStrategy and DumbStrategy) are built into the project as examples. Strategy definition takes place on the provider side, check out the provider project for more info on defining your own: https://github.com/ChrisHelmsC/HearthStoneSimulationsOnGolem
+* The strategy class name to use when playing these cards. Strategies determine the logic that is used when running simulations with a particular deck. Strategies can be simple or extremely complex. For best results, a strategy should be catered to your chosen deck composition. Two example strategies (SimpleStrategy and DumbStrategy) are built into the project as examples. Strategy definition takes place on the provider side, check out the provider project for more info on defining your own: https://github.com/ChrisHelmsC/HearthStoneSimulationsOnGolem
 
 ### Output
+The application output includes the following for each simulation run:
+* An output log detailing moves made and the steps used to play each game. These located in `dist/logging/output/logs`.
+* A statistical output detailing data collected from the game. These are located in `dist/logging/output/gamestats`.
+
+Once all simulations have been run, the applications combines all of the statistical outputs into one aggregated output. This aggregated outut provides a look at overall stats and performance of the decks and strategies used within the infile. This is located at `dist/logging/output/fullreport` and should be the first thing you check when the application is finished running.
