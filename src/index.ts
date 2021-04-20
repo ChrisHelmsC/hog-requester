@@ -33,7 +33,7 @@ function shuffle(array: Array<string>) {
 
 async function main() {
   const _package = await vm.repo({
-    image_hash: "4f8808a1e973bbf86f7888ede7db447674ed43d72554c7a94574f368",
+    image_hash: "e4530a3ff5ee4f6a2a841ec9194be5264e59d9a6666879290efa6aa6",
     min_mem_gib: 1.0,
     min_storage_gib: 1.0,
   });

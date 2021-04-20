@@ -1,0 +1,20 @@
+{
+	"player1": {
+		"deck": ["AcidicSwampOoze", "EmeraldSkytalon", "BlazingBattlemage", "VoodooDoctor", "BloodfenRaptor",
+			"BluegillWarrior", "KoboldGeomancer", "MurlocRaider", "StoneTuskBoar", "Wisp",
+			"GurubashiBerserker", "ChillwindYeti", "LootHoarder", "BackStab", "Shadowstep", "TowagglesScheme",
+			"GangUp", "Sap", "FanOfKnives"
+		],
+		"strategy": "DumbStrategy"
+	},
+
+	"player2": {
+		"deck": ["AcidicSwampOoze", "EmeraldSkytalon", "BlazingBattlemage", "VoodooDoctor", "BloodfenRaptor",
+			"BluegillWarrior", "KoboldGeomancer", "MurlocRaider", "StoneTuskBoar", "Wisp",
+			"GurubashiBerserker", "ChillwindYeti", "LootHoarder", "BackStab", "Shadowstep", "TowagglesScheme",
+			"GangUp", "Sap", "FanOfKnives"
+		],
+		"strategy": "SimpleStrategy"
+	},
+	"numberOfGames" : 20
+}
