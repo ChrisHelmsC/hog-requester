@@ -1,5 +1,7 @@
 # HSOG-requester
 
+**Associated Provider Project** https://github.com/ChrisHelmsC/HearthStoneSimulationsOnGolem
+
 NOTICE: This is a hackathon project and the quality of code is not garunteed. Please do not judge anything for being messy, gross, heinous, ridiculous, ineffecient, convoluted, of poor quality, poorly designed, noobish, hackey, or downright disgusting. Everything in this project was written in a small amount of time and with little to no planning.
 
 ### Table of Contents
@@ -9,7 +11,7 @@ NOTICE: This is a hackathon project and the quality of code is not garunteed. Pl
 * Output
 
 ### Introduction
-**This project is designed to be run on the Golem Network (https://www.golem.network) as a requestor. It is intened to manage multiple instances of the HearthStoneSimulationsOnGolem provider image, located at https://github.com/ChrisHelmsC/HearthStoneSimulationsOnGolem.
+**This project is designed to be run on the Golem Network (https://www.golem.network) as a requestor. It is intended to manage multiple instances of the HearthStoneSimulationsOnGolem provider image, located at https://github.com/ChrisHelmsC/HearthStoneSimulationsOnGolem.
 
 This project is designed to help the HearthStone community in the design and building of decks. Users can provide a specific deck build and strategy to the application, and HearthStoneOnGolem is designed to run a large number of simulated games using that data. The results of each simulation will collected and combined into a single stat sheet that provides valuable information on the deck's performance and results. The deck can then be tweaked and then run again, until the desired result is produced.
 
