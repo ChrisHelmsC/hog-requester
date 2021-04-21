@@ -35,3 +35,5 @@ The application output includes the following for each simulation run:
 * A statistical output detailing data collected from the game. These are located in `dist/logging/output/gamestats`.
 
 Once all simulations have been run, the applications combines all of the statistical outputs into one aggregated output. This aggregated outut provides a look at overall stats and performance of the decks and strategies used within the infile. This is located at `dist/logging/output/fullreport` and should be the first thing you check when the application is finished running.
+
+**Note** The FullReport outputs statistics in a [min, mean, max] format, which are computed from the data points collected over all of the simulations run.
