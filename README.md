@@ -1,6 +1,8 @@
 # HSOG-requester
 
 **Associated Provider Project** https://github.com/ChrisHelmsC/HearthStoneSimulationsOnGolem
+**Related Presentation** https://drive.google.com/file/d/1ValDiXT4MLZl6B-lbtOmVHOzWXfj8oWR/view?usp=sharing
+**Related Video** https://www.youtube.com/watch?v=b650X3D7P1k
 
 NOTICE: This is a hackathon project and the quality of code is not garunteed. Please do not judge anything for being messy, gross, heinous, ridiculous, ineffecient, convoluted, of poor quality, poorly designed, noobish, hackey, or downright disgusting. Everything in this project was written in a small amount of time and with little to no planning.
 
