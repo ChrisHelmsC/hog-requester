@@ -1,5 +1,8 @@
 # HSOG-requester
 
+## 2 TIME GRAND PRIZE WINNER OF THE GOLEM GITCOIN GR9 HACKATHON (Open track, Gaming on Golem) https://gitcoin.co/hackathon/gr9/?org=golemfactory
+
+
 **Associated Provider Project** https://github.com/ChrisHelmsC/HearthStoneSimulationsOnGolem
 
 **Related Presentation** https://drive.google.com/file/d/1ValDiXT4MLZl6B-lbtOmVHOzWXfj8oWR/view?usp=sharing
